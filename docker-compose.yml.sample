@@ -10,13 +10,6 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: slack
       RABBITMQ_DEFAULT_PASS: slackpassword
-    deploy:
-      replicas: 1
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-          condition: on-failure
 
   wormhole1:
     build: .
@@ -32,13 +25,6 @@ services:
       HUBOT_WORMHOLE_OUT=yes
       HUBOT_EXHALE_ROOM=wormhole
       HUBOT_SLACK_TOKEN=hubot_slack_token_wormhole1
-    deploy:
-      replicas: 1
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-          condition: on-failure
 
   wormhole2:
     build: .
@@ -54,13 +40,6 @@ services:
       HUBOT_WORMHOLE_OUT=yes
       HUBOT_EXHALE_ROOM=wormhole
       HUBOT_SLACK_TOKEN=hubot_slack_token_wormhole2
-    deploy:
-      replicas: 1
-      update_config:
-        parallelism: 1
-        delay: 10s
-      restart_policy:
-          condition: on-failure
 
 networks:
     backend:
