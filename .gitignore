@@ -1,2 +1,5 @@
+*.swp
 .hubot_history
 node_modules/
+bin/*.sh
+docker-compose.yml

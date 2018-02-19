@@ -1,0 +1,66 @@
+version: '3'
+services:
+
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - "5672:5672"
+    networks:
+      - backend
+    environment:
+      RABBITMQ_DEFAULT_USER: slack
+      RABBITMQ_DEFAULT_PASS: slackpassword
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+          condition: on-failure
+
+  wormhole1:
+    build: .
+    networks:
+      - backend
+    environment:
+      HUBOT_AMQP_USER=slack
+      HUBOT_AMQP_PASSWORD=slackpassword
+      HUBOT_AMQP_URL=rabbitmq
+      HUBOT_WORMHOLE_ROUTING_KEY=slack.wormhole1.wormhole
+      HUBOT_WORMHOLE_BINDING_KEYS=slack.wormhole2.wormhole
+      HUBOT_WORMHOLE_IN=yes
+      HUBOT_WORMHOLE_OUT=yes
+      HUBOT_EXHALE_ROOM=wormhole
+      HUBOT_SLACK_TOKEN=hubot_slack_token_wormhole1
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+          condition: on-failure
+
+  wormhole2:
+    build: .
+    networks:
+      - backend
+    environment:
+      HUBOT_AMQP_USER=slack
+      HUBOT_AMQP_PASSWORD=slackpassword
+      HUBOT_AMQP_URL=rabbitmq
+      HUBOT_WORMHOLE_ROUTING_KEY=slack.wormhole2.wormhole
+      HUBOT_WORMHOLE_BINDING_KEYS=slack.wormhole1.wormhole
+      HUBOT_WORMHOLE_IN=yes
+      HUBOT_WORMHOLE_OUT=yes
+      HUBOT_EXHALE_ROOM=wormhole
+      HUBOT_SLACK_TOKEN=hubot_slack_token_wormhole2
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+          condition: on-failure
+
+networks:
+    backend:

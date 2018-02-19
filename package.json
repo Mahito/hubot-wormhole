@@ -1,22 +1,22 @@
 {
-  "name": "wormhole-in",
+  "name": "wormhole",
   "version": "0.0.0",
   "private": true,
   "author": "Mahito <earthdragon77@gmail.com>",
   "description": "A message enters the wormhole ...",
   "dependencies": {
+    "amqplib": "^0.5.2",
+    "coffee-script": "^1.12.6",
+    "cron": "^1.3.0",
     "hubot": "^2.19.0",
     "hubot-diagnostics": "0.0.2",
-    "hubot-google-images": "^0.2.7",
-    "hubot-google-translate": "^0.2.1",
     "hubot-help": "^0.2.2",
-    "hubot-heroku-keepalive": "^1.0.3",
     "hubot-maps": "0.0.3",
     "hubot-pugme": "^0.1.1",
-    "hubot-redis-brain": "0.0.4",
     "hubot-rules": "^0.1.2",
     "hubot-scripts": "^2.17.2",
-    "hubot-shipit": "^0.2.1"
+    "hubot-shipit": "^0.2.1",
+    "hubot-slack": "^4.4.0"
   },
   "engines": {
     "node": "0.10.x"
