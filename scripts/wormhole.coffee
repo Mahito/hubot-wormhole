@@ -29,7 +29,7 @@ module.exports = (robot) ->
             key = process.env.HUBOT_WORMHOLE_ROUTING_KEY
 
             ch.assertExchange(ex, 'topic', {durable: false})
-            ch.publish(ex, key, Buffer.from("#{username}「#{msg}」"))
+            ch.publish(ex, key, Buffer.from("#{username}「 #{msg} 」"))
           )
         ).catch((reason) ->
           res.send("Error: #{reason}")
