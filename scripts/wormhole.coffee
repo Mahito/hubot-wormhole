@@ -18,18 +18,17 @@ module.exports = (robot) ->
   isOut = process.env.HUBOT_WORMHOLE_OUT
 
   if isIn == 'yes'
-    robot.hear /(.*)/i, (res) ->
+    robot.hear /.*/i, (res) ->
       amqp = require('amqplib')
       amqp.connect("amqp://#{user}:#{pass}@#{url}")
         .then((conn) ->
           conn.createChannel().then((ch) ->
             ex = 'topic.wormhole'
-            msg = res.match[1]
             username = res.message.user.name
             key = process.env.HUBOT_WORMHOLE_ROUTING_KEY
 
             ch.assertExchange(ex, 'topic', {durable: false})
-            ch.publish(ex, key, Buffer.from("#{username}「 #{msg} 」"))
+            ch.publish(ex, key, Buffer.from("#{username}「 #{res.message} 」"))
           )
         ).catch((reason) ->
           res.send("Error: #{reason}")
