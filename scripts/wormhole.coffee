@@ -24,7 +24,9 @@ module.exports = (robot) ->
         .then((conn) ->
           conn.createChannel().then((ch) ->
             ex = 'topic.wormhole'
-            username = res.message.user.name
+            username = res.message.user.profile.display_name ||
+                       res.message.user.profile.real_name ||
+                       res.message.user.name
             key = process.env.HUBOT_WORMHOLE_ROUTING_KEY
 
             ch.assertExchange(ex, 'topic', {durable: false})
