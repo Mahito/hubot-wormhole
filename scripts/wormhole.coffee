@@ -24,11 +24,15 @@ module.exports = (robot) ->
         .then((conn) ->
           conn.createChannel().then((ch) ->
             ex = 'topic.wormhole'
-            username = res.message.user.name
+            username = res.message.user.profile.display_name ||
+                       res.message.user.profile.real_name ||
+                       res.message.user.name
+            icon = res.message.user.profile.image_192
             key = process.env.HUBOT_WORMHOLE_ROUTING_KEY
+            payload = { username: username, icon_url: icon, text: res.message.text, as_user: false }
 
             ch.assertExchange(ex, 'topic', {durable: false})
-            ch.publish(ex, key, Buffer.from("#{username}「 #{res.message} 」"))
+            ch.publish(ex, key, Buffer.from(JSON.stringify(payload)))
           )
         ).catch((reason) ->
           res.send("Error: #{reason}")
@@ -38,7 +42,7 @@ module.exports = (robot) ->
     amqp_cb = require('amqplib/callback_api')
     amqp_cb.connect("amqp://#{user}:#{pass}@#{url}", (err, conn) ->
       room = process.env.HUBOT_EXHALE_ROOM || "wormhole"
-      send = (msg) -> robot.messageRoom room, msg
+      send = (msg) -> robot.send {room: room}, msg
       if err
         send "Error: #{err}"
       else
@@ -57,7 +61,7 @@ module.exports = (robot) ->
                   ch.bindQueue(q.queue, ex, key)
 
                 ch.consume(q.queue, (msg) ->
-                  send(msg.content.toString())
+                  send(JSON.parse(msg.content.toString()))
                   ch.ack(msg)
                 )
             )
