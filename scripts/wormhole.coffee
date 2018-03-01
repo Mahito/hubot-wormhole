@@ -28,11 +28,14 @@ module.exports = (robot) ->
                        res.message.user.profile.real_name ||
                        res.message.user.name
             icon = res.message.user.profile.image_192
-            key = process.env.HUBOT_WORMHOLE_ROUTING_KEY
             payload = { username: username, icon_url: icon, text: res.message.text, as_user: false }
 
-            ch.assertExchange(ex, 'topic', {durable: false})
-            ch.publish(ex, key, Buffer.from(JSON.stringify(payload)))
+            robot.adapter.client.web.conversations.info(res.message.room)
+              .then((response) ->
+                key = "#{process.env.HUBOT_WORMHOLE_ROUTING_KEY}.#{response.channel.name}"
+                ch.assertExchange(ex, 'topic', {durable: false})
+                ch.publish(ex, key, Buffer.from(JSON.stringify(payload)))
+              )
           )
         ).catch((reason) ->
           res.send("Error: #{reason}")
@@ -61,7 +64,9 @@ module.exports = (robot) ->
                   ch.bindQueue(q.queue, ex, key)
 
                 ch.consume(q.queue, (msg) ->
-                  send(JSON.parse(msg.content.toString()))
+                  room = msg.fields.routingKey.split('.').pop()
+                  message = JSON.parse(msg.content.toString())
+                  robot.send {room: room}, message
                   ch.ack(msg)
                 )
             )
