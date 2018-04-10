@@ -3,10 +3,12 @@
 This is a hubot for connecting a slack team and other slack teams via Message Queue.
 
 A slack team view.
+
 <img width="243" alt="A slack team view"
 src="https://user-images.githubusercontent.com/210692/38567935-54a42bb0-3d22-11e8-8254-382550b95752.png">
 
 Other slack team view.
+
 <img width="257" alt="Other slack team view"
 src="https://user-images.githubusercontent.com/210692/38567969-6ab04312-3d22-11e8-8bce-adb806d2f607.png">
 
@@ -41,7 +43,7 @@ $ git clone https://github.com/Mahito/hubot-wormhole
 
 ## Configuring
 
-|環境変数|値|概要|
+|Env|Value|Description|
 |--|--|--|
 |HUBOT_AMQP_USER|string|AMQP user name|
 |HUBOT_AMQP_PASSWORD|string|AMQP user password|
