@@ -2,6 +2,30 @@
 
 This is a hubot for connecting a slack team and other slack teams via Message Queue.
 
+A slack team view.
+<img width="243" alt="A slack team view"
+src="https://user-images.githubusercontent.com/210692/38567935-54a42bb0-3d22-11e8-8254-382550b95752.png">
+
+Other slack team view.
+<img width="257" alt="Other slack team view"
+src="https://user-images.githubusercontent.com/210692/38567969-6ab04312-3d22-11e8-8bce-adb806d2f607.png">
+
+The following example explain the operation:
+
+<img width="719" alt="Operation image"
+src="https://user-images.githubusercontent.com/210692/38569327-e9cf90c8-3d25-11e8-825e-b423f6e3dff4.png">
+
+1. Slack A sends a message with the routing key as "routing.key".
+2. Slack B gets a message from queue with the binding key as "routing.key"
+3. Slack C gets a message from queue with the binding key as "routing.*".
+4. Slack C sends a message with the routing key as "your.routing.key".
+5. Slack B gets a message from queue with the binding key as "your.#"
+
+"*" (star) can substitute for exactly one word.
+"#" (hash) can substitute for zero or more words.
+
+Message exchanges can be set for one way and two way!
+
 ## Requirements
 
 * Message Queu that can use AMQP (eg RabbitMQ)
