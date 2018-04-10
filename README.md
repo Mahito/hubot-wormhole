@@ -14,16 +14,17 @@ src="https://user-images.githubusercontent.com/210692/38567969-6ab04312-3d22-11e
 
 The following example explain the operation:
 
-<img width="719" alt="Operation image"
-src="https://user-images.githubusercontent.com/210692/38569327-e9cf90c8-3d25-11e8-825e-b423f6e3dff4.png">
+<img width="750" alt="Sample Image"
+src="https://user-images.githubusercontent.com/210692/38570921-f53a6ede-3d29-11e8-8caf-78e0b7830817.png">
 
-1. Slack A sends a message with the routing key as "routing.key".
-2. Slack B gets a message from queue with the binding key as "routing.key"
-3. Slack C gets a message from queue with the binding key as "routing.*".
-4. Slack C sends a message with the routing key as "your.routing.key".
-5. Slack B gets a message from queue with the binding key as "your.#"
+1. Slack A sends a message with the routing key as "slack.teama.ch".
+2. Slack B gets a message from queue with the binding key as "slack.teama.ch"
+3. Slack C gets a message from queue with the binding key as "slack.teama.*".
+4. Slack C sends a message with the routing key as "test.teamc.ch".
+5. Slack B gets a message from queue with the binding key as "test.#"
 
 "*" (star) can substitute for exactly one word.
+
 "#" (hash) can substitute for zero or more words.
 
 Message exchanges can be set for one way and two way!
